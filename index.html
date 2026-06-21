@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creator Toolkit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">CT</div>
+      <div>
+        <div class="brand-name">Creator Toolkit</div>
+        <div class="brand-sub">Groq-powered</div>
+      </div>
+    </div>
+
+    <div class="rack-label">Channels</div>
+    <nav class="nav-list">
+      <button class="nav-item" type="button" data-tool="humanizer">
+        <span class="nav-dot"></span><span class="nav-label">Script Humanizer</span>
+      </button>
+      <button class="nav-item" type="button" data-tool="vouch">
+        <span class="nav-dot"></span><span class="nav-label">Vouch Comments</span>
+      </button>
+      <button class="nav-item" type="button" data-tool="ugc">
+        <span class="nav-dot"></span><span class="nav-label">UGC Director</span>
+      </button>
+      <div class="nav-item future">
+        <span class="nav-dot"></span><span class="nav-label">More tools</span><span class="nav-future-tag">soon</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-foot">One Groq key powers every tool here. Add yours in Settings, top right.</div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1 class="topbar-title" id="topbarTitle">Script Humanizer</h1>
+      <div class="topbar-actions">
+        <button class="key-pill" type="button">
+          <span class="dot"></span><span class="key-pill-label">No Groq key</span>
+        </button>
+        <button class="icon-btn" type="button" data-open-settings aria-label="Open settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= SCRIPT HUMANIZER ================= -->
+    <section class="view view-humanizer" id="view-humanizer">
+      <p class="tool-intro">Paste a clean AI script. Get back something that sounds like you actually talked into the mic — same info, same CTA, just a real take instead of a read-through.</p>
+
+      <div class="tool-header-row">
+        <div class="field" style="margin:0; max-width:260px;">
+          <span class="field-label">Accent</span>
+          <select id="h-accent" class="select">
+            <option value="none" selected>General American (default)</option>
+            <option value="southern">Southern American (US)</option>
+            <option value="nyc">New York / Urban American</option>
+            <option value="uk">British (UK Casual)</option>
+          </select>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div class="rec-indicator" id="h-recDot"><span class="dot"></span>REC</div>
+          <div class="vu-meter" id="h-vuMeter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <div class="takes">
+        <div class="take">
+          <div class="take-label">Take 1 — Original</div>
+          <textarea id="h-inputScript" class="input" placeholder="Paste your clean AI-written script here..."></textarea>
+          <div class="stat-row" id="h-inputStats">0 words · 0:00</div>
+        </div>
+        <div class="take output">
+          <div class="take-label">Take 2 — Humanized</div>
+          <textarea id="h-outputScript" class="input" placeholder="Your humanized take shows up here once you hit generate." readonly></textarea>
+          <div class="stat-row" id="h-outputStats">0 words · 0:00</div>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button class="btn btn-primary" id="h-generateBtn" type="button">Generate Take 2</button>
+        <button class="btn btn-ghost" id="h-copyBtn" type="button">Copy</button>
+        <button class="btn btn-ghost" id="h-downloadBtn" type="button">Download .txt</button>
+      </div>
+
+      <p class="alert alert-error" id="h-errorMsg" role="alert" hidden></p>
+    </section>
+
+    <!-- ================= VOUCH COMMENTS AI ================= -->
+    <section class="view view-vouch" id="view-vouch" hidden>
+      <p class="tool-intro">Paste a caption or real comments — the engine learns the writing style (Comment DNA) and generates comments, reply threads, or rewrites that blend in naturally.</p>
+
+      <div class="platform-select-wrap">
+        <div class="field" style="margin:0; max-width:220px;">
+          <span class="field-label">Platform</span>
+          <select id="v-platformSelect" class="select">
+            <option>TikTok</option><option>Instagram</option><option>Facebook</option><option>YouTube</option><option>Twitter/X</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <span class="field-label">Post Caption or Script</span>
+          <textarea id="v-captionInput" class="input" rows="4" placeholder="Paste your TikTok caption, Instagram post, video script, or product description..."></textarea>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <span class="field-label">Existing Comments — optional, greatly improves DNA accuracy</span>
+          <textarea id="v-existingInput" class="input" rows="3" placeholder="Paste real comments from this niche. More examples = better style match..."></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="field-row">
+          <div class="field" style="margin-bottom:0;">
+            <span class="field-label">Comment Count</span>
+            <div class="count-row" id="v-countRow"></div>
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <span class="field-label">Comment Mix %</span>
+            <div id="v-mixWrap"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis-actions">
+        <button class="btn btn-primary" id="v-analyzeBtn" type="button">🔬 Analyze Comment DNA</button>
+        <div id="v-genWrap" hidden><button class="btn btn-primary btn-block" id="v-generateBtn" type="button">✦ Generate <span id="v-genCount">10</span> Comments</button></div>
+        <div id="v-threadsWrap" hidden><button class="btn btn-ghost btn-block" id="v-threadsTabBtn" type="button">💬 Threads</button></div>
+      </div>
+
+      <p class="alert alert-error" id="v-errorBox" role="alert" hidden></p>
+      <div class="loader" id="v-loaderBar" hidden><div class="spinner"></div><span id="v-loaderText" style="font-size:0.8rem;color:var(--text-muted)">Working…</span></div>
+
+      <div id="v-dnaOut" hidden></div>
+
+      <div id="v-resultsOut" hidden>
+        <div class="tabs">
+          <button class="tab on" id="v-tab-comments" type="button">Comments</button>
+          <button class="tab" id="v-tab-threads" type="button">Threads</button>
+          <button class="tab" id="v-tab-rewrite" type="button">Rewrite</button>
+        </div>
+
+        <div id="v-pan-comments">
+          <div class="export-row">
+            <span class="export-count" id="v-commentCount"></span>
+            <button class="comment-copy" id="v-copyAllBtn" type="button">Copy All</button>
+            <button class="comment-copy" id="v-expTxtBtn" type="button">↓ TXT</button>
+            <button class="comment-copy" id="v-expCsvBtn" type="button">↓ CSV</button>
+          </div>
+          <div id="v-commentList"></div>
+        </div>
+
+        <div id="v-pan-rewrite" hidden>
+          <div class="card">
+            <div class="field">
+              <span class="field-label">Paste Comments to Rewrite — one per line</span>
+              <textarea id="v-rewriteInput" class="input" rows="5" placeholder="I highly recommend this.&#10;This worked perfectly for me.&#10;Great opportunity for everyone."></textarea>
+            </div>
+            <button class="btn btn-primary" id="v-runRewriteBtn" type="button">✦ Rewrite to Match DNA</button>
+          </div>
+          <div id="v-rewriteOut"></div>
+        </div>
+
+        <div id="v-pan-threads" hidden>
+          <div class="card">
+            <span class="field-label">Conversation Type</span>
+            <div class="type-grid">
+              <div class="type-card on" id="v-type-viewers">
+                <div class="type-icon">👥</div>
+                <div class="type-title">Viewers Talking</div>
+                <div class="type-desc">People reacting and chatting with each other — no creator involved</div>
+                <div class="type-example">
+                  <div class="type-example-line">omg i tried this and it worked 😭</div>
+                  <div class="type-example-line indent">↳ wait really?? how long</div>
+                  <div class="type-example-line indent">↳ like 2 days not even joking</div>
+                </div>
+              </div>
+              <div class="type-card" id="v-type-creator">
+                <div class="type-icon">🎙️</div>
+                <div class="type-title">With Creator</div>
+                <div class="type-desc">Creator replies to comments — builds trust and engagement</div>
+                <div class="type-example">
+                  <div class="type-example-line">does this work for beginners?</div>
+                  <div class="type-example-line indent" style="color:var(--accent-vouch)">↳ [Creator] yes 100%! start with step 1 👆</div>
+                  <div class="type-example-line indent">↳ omg they replied!!</div>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <span class="field-label">Creator Name — only used for "With Creator" threads</span>
+              <input type="text" id="v-creatorHandle" class="input" placeholder="e.g. @yourhandle or brand name">
+            </div>
+            <button class="btn btn-primary" id="v-generateThreadsBtn" type="button">💬 Generate Threads</button>
+          </div>
+          <div id="v-threadList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= UGC DIRECTOR AI ================= -->
+    <section class="view view-ugc" id="view-ugc" hidden>
+      <p class="tool-intro">Paste a UGC script. Get a scene-by-scene breakdown with exact timing and copy-paste Kling AI video prompts — built around a consistent character reference image.</p>
+
+      <div class="tabs" style="max-width:280px;">
+        <button class="tab on" id="u-subtab-generate" type="button">Generate</button>
+        <button class="tab" id="u-subtab-history" type="button">History</button>
+      </div>
+
+      <div id="u-subview-generate">
+        <div class="card">
+          <div class="field">
+            <span class="field-label">Content Style</span>
+            <input type="text" id="u-contentStyle" class="input" placeholder="e.g. Fast-paced retail exposure / shopping hack">
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span class="field-label">Your Script</span>
+              <span class="stat-row" id="u-wordCount" style="border-top:none; margin:0; padding:0;">0 words</span>
+            </div>
+            <textarea id="u-scriptInput" class="input" rows="8" placeholder="Okay you guys, I found the best hack at Walmart and nobody is talking about this..."></textarea>
+          </div>
+        </div>
+
+        <p class="alert alert-error" id="u-errorBox" role="alert" hidden></p>
+
+        <div class="actions-row">
+          <button class="btn btn-primary" id="u-generateBtn" type="button">🎬 Generate Scene Matrix</button>
+        </div>
+
+        <div id="u-resultsSection" hidden style="margin-top:22px;">
+          <div class="section-head"><div class="section-blip"></div><span class="section-title" id="u-sceneCount">Scene Matrix</span></div>
+          <div class="export-row">
+            <span class="export-count" style="flex:1;"></span>
+            <button class="comment-copy" id="u-exportMdBtn" type="button">↓ Export .md</button>
+            <button class="comment-copy" id="u-exportCsvBtn" type="button">↓ Export CSV</button>
+            <button class="comment-copy" id="u-copyAllBtn" type="button">Copy All</button>
+          </div>
+          <div class="scene-table-wrap">
+            <table class="scene-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Script Segment</th>
+                  <th>Duration</th>
+                  <th>Kling AI Prompt</th>
+                </tr>
+              </thead>
+              <tbody id="u-sceneTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="u-subview-history" hidden>
+        <p class="field-hint" id="u-historyCount" style="margin-bottom:14px;">0 saved generations.</p>
+        <div id="u-historyList"></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ================= SETTINGS MODAL ================= -->
+<div class="modal-overlay" id="settingsOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-head">
+      <h2 id="settingsTitle">Settings</h2>
+      <button class="icon-btn" id="settingsClose" type="button" aria-label="Close settings">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <span class="field-label">Groq API key</span>
+        <input type="password" id="settingsApiKey" class="input" placeholder="gsk_..." autocomplete="off" spellcheck="false">
+        <span class="field-hint" id="settingsKeyPreview"></span>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <span class="field-label">Model</span>
+        <input type="text" id="settingsModel" class="input" list="settingsModelList" value="llama-3.3-70b-versatile" autocomplete="off" spellcheck="false">
+        <datalist id="settingsModelList">
+          <option value="llama-3.3-70b-versatile">
+          <option value="llama-3.1-8b-instant">
+          <option value="gemma2-9b-it">
+        </datalist>
+      </div>
+      <p class="field-hint" style="margin-top:14px;">Saved in this browser's local storage and used by every tool here. Sent to our serverless functions, which forward it to Groq server-side — it's never exposed to Groq directly from your browser. If a model name stops working, check console.groq.com/docs/models.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" id="settingsCancel" type="button">Cancel</button>
+      <button class="btn btn-primary" id="settingsSave" type="button" style="--tool-accent:var(--accent-humanizer);">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/humanizer.js"></script>
+<script src="js/vouch.js"></script>
+<script src="js/ugc.js"></script>
+</body>
+</html>
